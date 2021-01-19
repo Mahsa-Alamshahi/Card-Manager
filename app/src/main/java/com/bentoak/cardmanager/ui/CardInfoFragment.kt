@@ -2,10 +2,10 @@ package com.bentoak.cardmanager.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.bentoak.cardmanager.R
@@ -46,10 +46,11 @@ class CardInfoFragment : Fragment() {
 
     fun onScanPress(v: View?) {
         scanCardIntent = Intent(requireContext(), CardIOActivity::class.java).apply {
-            putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, true)
+            putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, false)
             putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, false)
-            putExtra(CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE, false)
-        }
+            putExtra(CardIOActivity.EXTRA_CAPTURED_CARD_IMAGE, true)
+            putExtra(CardIOActivity.EXTRA_RETURN_CARD_IMAGE, true)
+              }
         startActivityForResult(scanCardIntent, SCAN_CARD_REQUEST_CODE)
     }
 
@@ -75,38 +76,36 @@ class CardInfoFragment : Fragment() {
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
+        super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode === SCAN_CARD_REQUEST_CODE) {
+        if (requestCode == SCAN_CARD_REQUEST_CODE) {
 
-            var resultDisplayStr: String
+            var resultDisplayStr: String = ""
 
             if (data != null && data.hasExtra(CardIOActivity.EXTRA_SCAN_RESULT)) {
 
                 val scanResult: CreditCard = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT)!!
-                resultDisplayStr = """
-                 Card Number: ${scanResult.redactedCardNumber}
-                  """.trimIndent()
-                mDataBinding.txtCardNumber.text = scanResult.redactedCardNumber
-                mDataBinding.imgLogo.setImageDrawable(CardHelper.getCardNumberIcon(scanResult.redactedCardNumber, requireContext()))
+
+                mDataBinding.txtCardNumber.text = CardHelper.addSpaceInCardNumber(scanResult.cardNumber)
+                mDataBinding.imgLogo.setImageDrawable(CardHelper.getCardTypeIcon(scanResult.cardType.toString(), requireContext()))
 
 
                 if (scanResult.isExpiryValid) {
-                    resultDisplayStr += """
+                    mDataBinding.txtExpireDate.text =  """
                     Expiration Date: ${scanResult.expiryMonth}/${scanResult.expiryYear}
                     """.trimIndent()
-                    mDataBinding.txtExpireDate.text = resultDisplayStr
                 }
 
 
                 if (scanResult.cvv != null) {
-                    resultDisplayStr += """CVV has ${scanResult.cvv.length} digits."""
-                    mDataBinding.txtCVV.text = scanResult.cvv
+                    mDataBinding.txtCVV.setText("""${scanResult.cvv} """)
                 }
 
             } else {
                 resultDisplayStr = "Scan was canceled."
             }
+        } else {
+            Toast.makeText(requireContext(), "Can not scan card. Non-embossed cards are not supported.", Toast.LENGTH_SHORT).show()
         }
 
     }
