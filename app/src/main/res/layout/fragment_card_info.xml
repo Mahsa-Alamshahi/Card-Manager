@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <data>
+        <import type="android.view.View" />
+
+        <variable
+            name="fragmentProvider"
+            type="com.bentoak.cardmanager.ui.CardInfoFragment" />
+    </data>
+
+
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.CardInfoFragment">
+
+
+            <TextView
+                android:id="@+id/txtTitle"
+                style="@style/AppTitleTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginRight="32dp"
+                android:text="@string/enter_your_card_details"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <ImageView
+                android:id="@+id/imgCamera"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="38dp"
+                android:background="@drawable/ic_screenshot2021_01_181417243"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_baseline_photo_camera_24"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
+
+
+            <TextView
+                android:id="@+id/txtCameraCapture"
+                style="@style/AppTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:padding="12dp"
+                android:text="@string/card_capture"
+                android:onClick="@{(view) -> fragmentProvider.onScanPress(view)}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgCamera" />
+
+
+            <LinearLayout
+                android:id="@+id/cardNumberParent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="48dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/rounded_corner"
+                android:orientation="horizontal"
+                android:padding="12dp"
+                android:weightSum="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtCameraCapture">
+
+
+                <TextView
+                    android:id="@+id/txtCardNumber"
+                    style="@style/AppTextStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".7" />
+
+
+                <ImageView
+                    android:id="@+id/imgLogo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerInside"
+                    android:layout_weight=".3" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/cardDetailsParent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:orientation="horizontal"
+                android:weightSum="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardNumberParent">
+
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
+                    android:layout_weight=".5"
+                    android:background="@drawable/rounded_corner"
+                    android:orientation="horizontal"
+                    android:onClick="@{(view) -> fragmentProvider.showDateDialogFragment(view)}"
+                    android:weightSum="1">
+
+
+                    <TextView
+                        android:id="@+id/txtExpireDate"
+                        style="@style/AppTextStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight=".7"
+                        android:hint="@string/expiry_date"
+                        android:paddingLeft="12dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp" />
+
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight=".3"
+                        android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_weight=".5"
+                    android:background="@drawable/rounded_corner"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:id="@+id/txtCVV"
+                        style="@style/AppTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:hint="@string/cvv"
+                        android:paddingLeft="12dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="12dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardDetailsParent">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_locked_padlock_svgrepo_com" />
+
+                <TextView
+                    style="@style/AppTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingLeft="8dp"
+                    android:text="@string/card_details_are_stored_securely" />
+
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>
